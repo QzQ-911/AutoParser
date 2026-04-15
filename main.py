@@ -107,24 +107,30 @@ def extract_avtozakup(raw_text: str):
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "pairs": [],
-        "raw_text": "",
-        "count": 0,
-        "page": "default"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "pairs": [],
+            "raw_text": "",
+            "count": 0,
+            "page": "default"
+        }
+    )
 
 
 @app.get("/default", response_class=HTMLResponse)
 async def default_page(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "pairs": [],
-        "raw_text": "",
-        "count": 0,
-        "page": "default"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "pairs": [],
+            "raw_text": "",
+            "count": 0,
+            "page": "default"
+        }
+    )
 
 
 @app.post("/default", response_class=HTMLResponse)
@@ -135,33 +141,34 @@ async def default_parse(
     col4: str = Form(...)
 ):
     pairs = extract_default(raw_text)
-
-    output_lines = [
-        f"{part}\t{brand}\t{analog}\t{col4}"
-        for part, brand in pairs
-    ]
-
+    output_lines = [f"{part}\t{brand}\t{analog}\t{col4}" for part, brand in pairs]
     output_text = "\n".join(output_lines)
 
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "output_text": output_text,
-        "pairs_count": len(pairs),
-        "analog": analog,
-        "col4": col4,
-        "page": "default"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "output_text": output_text,
+            "pairs_count": len(pairs),
+            "analog": analog,
+            "col4": col4,
+            "page": "default"
+        }
+    )
 
 
 @app.get("/trodo", response_class=HTMLResponse)
 async def trodo_page(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "pairs": [],
-        "raw_text": "",
-        "count": 0,
-        "page": "trodo"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "pairs": [],
+            "raw_text": "",
+            "count": 0,
+            "page": "trodo"
+        }
+    )
 
 
 @app.post("/trodo", response_class=HTMLResponse)
@@ -172,30 +179,33 @@ async def trodo_parse(
     col4: str = Form(...)
 ):
     pairs = extract_trodo(raw_text)
+    output_text = "\n".join(f"{p}\t{b}\t{analog}\t{col4}" for p, b in pairs)
 
-    output_text = "\n".join(
-        f"{p}\t{b}\t{analog}\t{col4}" for p, b in pairs
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "output_text": output_text,
+            "pairs_count": len(pairs),
+            "analog": analog,
+            "col4": col4,
+            "page": "trodo"
+        }
     )
-
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "output_text": output_text,
-        "pairs_count": len(pairs),
-        "analog": analog,
-        "col4": col4,
-        "page": "trodo"
-    })
 
 
 @app.get("/avtozakup", response_class=HTMLResponse)
 async def avtozakup_page(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "pairs": [],
-        "raw_text": "",
-        "count": 0,
-        "page": "avtozakup"
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "pairs": [],
+            "raw_text": "",
+            "count": 0,
+            "page": "avtozakup"
+        }
+    )
 
 
 @app.post("/avtozakup", response_class=HTMLResponse)
@@ -206,16 +216,16 @@ async def avtozakup_parse(
     col4: str = Form(...)
 ):
     pairs = extract_avtozakup(raw_text)
+    output_text = "\n".join(f"{p}\t{b}\t{analog}\t{col4}" for p, b in pairs)
 
-    output_text = "\n".join(
-        f"{p}\t{b}\t{analog}\t{col4}" for p, b in pairs
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "output_text": output_text,
+            "pairs_count": len(pairs),
+            "analog": analog,
+            "col4": col4,
+            "page": "avtozakup"
+        }
     )
-
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "output_text": output_text,
-        "pairs_count": len(pairs),
-        "analog": analog,
-        "col4": col4,
-        "page": "avtozakup"
-    })
